@@ -10,7 +10,6 @@ var (
 	modadvapi32 = syscall.NewLazyDLL("advapi32.dll")
 	modntdll    = syscall.NewLazyDLL("ntdll.dll")
 	modkernel32 = syscall.NewLazyDLL("kernel32.dll")
-    // prettified lol, kdot will probs use this so its kinda written in clean way cuz i dont want him to rename all of the sh
 	procLookupPrivilegeValueW  = modadvapi32.NewProc("LookupPrivilegeValueW")
 	procAdjustTokenPrivileges  = modadvapi32.NewProc("AdjustTokenPrivileges")
 	procRtlSetProcessIsCritical = modntdll.NewProc("RtlSetProcessIsCritical")
