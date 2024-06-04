@@ -2,13 +2,11 @@
 
 ![Go Defender](GoDefender.png)
 
-## Anti-Malware Go Package
+## GoDefender
 
-This Go package provides functionality to detect and defend against various forms of malware, including debugging tools, virtualization environments, and critical processes.
+This Go package provides functionality to detect and defend against various forms of debugging tools, virtualization environments.
 
 ### Anti-Virtualization
-
-This module contains functions to detect virtualization environments commonly used for malware analysis and evasion.
 
 - **Triage Detection**: Detects if the system is running in a triage or analysis environment.
 - **Monitor Metrics**: Monitors system metrics to identify abnormal behavior indicative of virtualization.
@@ -32,5 +30,5 @@ This module includes functions to detect and prevent debugging and analysis of t
 ### Process
 
 This module focuses on critical processes that should be monitored or protected.
-
 - **Critical Process**: Implements functionality to manage critical processes essential for system operation.
+- **SetDebugPrivilege**: Grants better permissions.
