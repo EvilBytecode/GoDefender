@@ -1,7 +1,6 @@
 package programutils
 
 import (
-	"fmt"
 	"syscall"
 	"unsafe"
 )
