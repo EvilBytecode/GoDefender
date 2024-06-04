@@ -16,3 +16,5 @@ Anti virulization, Anti Debugging. in your beloved golang.
 - Check blacklisted windows
 - KillBlacklisted Proceseses
 - Parent AntiDebug
+
+w package icl
