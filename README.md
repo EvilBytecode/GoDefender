@@ -5,7 +5,7 @@
 ## GoDefender
 
 This Go package provides functionality to detect and defend against various forms of debugging tools, virtualization environments.
-
+btw for quick setup run installer.bat
 ### Anti-Virtualization
 
 - **Triage Detection**: Detects if the system is running in a triage or analysis environment.
