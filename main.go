@@ -3,25 +3,25 @@ package main
 import (
 	"fmt"
 	"os"
-	// antivirtulization
-    "AntiPackageGOLANG/AntiVirtualization/TriageDetection"
-	"AntiPackageGOLANG/AntiVirtualization/MonitorMetrics"
-	"AntiPackageGOLANG/AntiVirtualization/VirtualboxDetection"
-	"AntiPackageGOLANG/AntiVirtualization/VMWareDetection"
-	"AntiPackageGOLANG/AntiVirtualization/KVMCheck"
-	"AntiPackageGOLANG/AntiVirtualization/UsernameCheck"
+	// Anti-Virtualization
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/TriageDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/MonitorMetrics"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VirtualboxDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMWareDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/KVMCheck"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/UsernameCheck"
 
-	// anti debug below
-    "AntiPackageGOLANG/antidebug/IsDebuggerPresent"
-	"AntiPackageGOLANG/antidebug/RemoteDebugger"
-	"AntiPackageGOLANG/antidebug/pcuptime"
-    "AntiPackageGOLANG/antidebug/CheckBlacklistedWindowsNames"
-	"AntiPackageGOLANG/antidebug/RunningProcesses"
-	"AntiPackageGOLANG/antidebug/ParentAntiDebug"
-	"AntiPackageGOLANG/antidebug/KillBadProcesses"
+	// Anti-Debug
+	"github.com/EvilBytecode/GoDefender/AntiDebug/IsDebuggerPresent"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/RemoteDebugger"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/pcuptime"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/CheckBlacklistedWindowsNames"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/RunningProcesses"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/ParentAntiDebug"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/KillBadProcesses"
 
-	// ProcessRelated
-	"AntiPackageGOLANG/Process/CriticalProcess"
+	// Process Related
+	"github.com/EvilBytecode/GoDefender/Process/CriticalProcess"
 )
 
 func main() {
@@ -36,11 +36,11 @@ func main() {
 	- KillBlacklisted Proceseses
 	- Parent AntiDebug
 	*/
-    IsDebuggerPresent.IsDebuggerPresent()
+        IsDebuggerPresent.IsDebuggerPresent()
 	remotedebuggercheck.RemoteDebugger()
 	pcuptime.CheckUptime(1200)
 	runningprocesses.CheckRunningProcessesCount(50)
-    blacklistcheck.CheckBlacklistedWindows()
+        blacklistcheck.CheckBlacklistedWindows()
 	parentantidebug.ParentAntiDebug()
 	processkiller.KillProcesses()
 
@@ -63,12 +63,12 @@ func main() {
 		os.Exit(-1)
 	}
 	usernamecheck.CheckForBlacklistedNames()
-    artifactsdetector.BadVMFilesDetection()
+        artifactsdetector.BadVMFilesDetection()
 	fmt.Println("IF YOURE HERE YOU PASSED LOL")
 	/*
 	EXTRA THINGS NOW:
 	*/
 	//programutils.SetDebugPrivilege() this is for devs who plan on continuing
-	programutils.SetProcessCritical() // this automatically gets the SeDebugPrivillige
+	//programutils.SetProcessCritical() // this automatically gets the SeDebugPrivillige
 	fmt.Scanln()
 }
