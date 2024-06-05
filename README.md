@@ -110,3 +110,7 @@ func main() {
 	fmt.Scanln()
 }
 ```
+
+## Credits:
+- https://github.com/AdvDebug = Inspired me to start making this package, without him it wouldnt be here, check out his github.
+- https://github.com/MmCopyMemory = Giving ideas and many more, check out his github.
