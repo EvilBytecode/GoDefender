@@ -1,7 +1,7 @@
 @Echo off
 title DOWNLOADING MODULES
 go mod init GoDefender
-go get github.com/EvilBytecode/GoDefender@v1.0.3
+go get github.com/EvilBytecode/GoDefender@v1.0.5
 go get github.com/EvilBytecode/GoDefender/AntiVirtualization/TriageDetection
 go get github.com/EvilBytecode/GoDefender/AntiVirtualization/MonitorMetrics
 go get github.com/EvilBytecode/GoDefender/AntiVirtualization/VirtualboxDetection
