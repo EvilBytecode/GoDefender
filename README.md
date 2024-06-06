@@ -34,6 +34,12 @@ This module focuses on critical processes that should be monitored or protected.
 - **SetDebugPrivilege**: Grants better permissions.
 # Quick Nutshell
 - Detecting Most Anti Anti-Debugging Hooking Methods on Common Anti-Debugging Functions by checking for Bad Instructions on Functions Addresses (Most Effective on x64) and it detects user-mode anti anti-debuggers like scyllahide, and it can also detect some sandboxes which uses hooking to monitor application behaviour/activity (like [Tria.ge](https://tria.ge/))
+
+# V1.0.5 (soon)
+- usb check
+- internet check
+- recent file activity
+- soon more but codes are uploaded but not pushed yet.
 ## Credits:
 - https://github.com/AdvDebug = Inspired me to start making this package, without him it wouldnt be here, check out his github.
 - https://github.com/MmCopyMemory = Giving ideas and many more, check out his github.
