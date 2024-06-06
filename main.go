@@ -10,6 +10,8 @@ import (
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMWareDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/KVMCheck"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/UsernameCheck"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/USBCheck"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/RecentFileActivity"
 
 
 	// Anti-Debug
@@ -18,9 +20,10 @@ import (
 	"github.com/EvilBytecode/GoDefender/AntiDebug/pcuptime"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/CheckBlacklistedWindowsNames"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/RunningProcesses"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/ParentAntiDebug"
+	//"github.com/EvilBytecode/GoDefender/AntiDebug/ParentAntiDebug"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/KillBadProcesses"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/UserAntiAntiDebug"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/InternetCheck"
 
 	// Process Related
 	//"github.com/EvilBytecode/GoDefender/Process/CriticalProcess"
@@ -38,13 +41,15 @@ func main() {
 	- KillBlacklisted Proceseses
 	- Parent AntiDebug
 	*/
+	RecentFileActivity.RecentFileActivityCheck()
+	USBCheck.PluggedIn()
 	userantiantidebug.AntiAntiDebug()
         IsDebuggerPresent.IsDebuggerPresent()
 	remotedebuggercheck.RemoteDebugger()
 	pcuptime.CheckUptime(1200)
 	runningprocesses.CheckRunningProcessesCount(50)
         blacklistcheck.CheckBlacklistedWindows()
-	parentantidebug.ParentAntiDebug()
+	//parentantidebug.ParentAntiDebug()
 	processkiller.KillProcesses()
 
 	/* 
@@ -56,6 +61,8 @@ func main() {
 	- Username Check
 	- 
 	*/
+
+	InternetCheck.CheckConnection()
 	triagecheck.TriageCheckDebug()
 	MonitorMetrics.IsScreenSmall()
 	VirtualboxDetection.GraphicsCardCheck()
