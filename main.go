@@ -65,6 +65,7 @@ func main() {
 	}
 	usernamecheck.CheckForBlacklistedNames()
         artifactsdetector.BadVMFilesDetection()
+	userantiantidebug.AntiAntiDebug()
 	fmt.Println("IF YOURE HERE YOU PASSED LOL")
 	/*
 	EXTRA THINGS NOW:
