@@ -10,6 +10,8 @@ import (
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMWareDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/KVMCheck"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/UsernameCheck"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMArtifacts"
+
 
 	// Anti-Debug
 	"github.com/EvilBytecode/GoDefender/AntiDebug/IsDebuggerPresent"
