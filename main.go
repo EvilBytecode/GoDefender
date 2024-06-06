@@ -24,7 +24,7 @@ import (
 	"github.com/EvilBytecode/GoDefender/AntiDebug/UserAntiAntiDebug"
 
 	// Process Related
-	"github.com/EvilBytecode/GoDefender/Process/CriticalProcess"
+	//"github.com/EvilBytecode/GoDefender/Process/CriticalProcess"
 )
 
 func main() {
