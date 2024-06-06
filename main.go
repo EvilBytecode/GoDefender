@@ -10,7 +10,6 @@ import (
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMWareDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/KVMCheck"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/UsernameCheck"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMArtifacts"
 
 
 	// Anti-Debug
@@ -67,7 +66,6 @@ func main() {
 		os.Exit(-1)
 	}
 	usernamecheck.CheckForBlacklistedNames()
-        artifactsdetector.BadVMFilesDetection()
 	fmt.Println("IF YOURE HERE YOU PASSED LOL")
 	/*
 	EXTRA THINGS NOW:
