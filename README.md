@@ -1,6 +1,6 @@
 # Go Defender
 
-![Go Defender](GoDefender.png)
+![Go Defender](GoDefenderLogo.png)
 
 ## GoDefender
 
