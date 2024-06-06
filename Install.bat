@@ -1,4 +1,4 @@
-@Echo off
+@echo off
 title DOWNLOADING MODULES
 go mod init GoDefender
 go get github.com/EvilBytecode/GoDefender@v1.0.5
@@ -17,4 +17,5 @@ go get github.com/EvilBytecode/GoDefender/AntiDebug/ParentAntiDebug
 go get github.com/EvilBytecode/GoDefender/AntiDebug/KillBadProcesses
 go get github.com/EvilBytecode/GoDefender/Process/CriticalProcess
 go get github.com/EvilBytecode/GoDefender/AntiDebug/UserAntiAntiDebug
+go get github.com/intel-go/cpuid
 pause
