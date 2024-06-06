@@ -14,6 +14,8 @@ btw for quick setup run install.bat
 - **VMWare Detection**: Detects the presence of VMware virtualization software.
 - **KVM Check**: Checks for Kernel-based Virtual Machine (KVM) hypervisor.
 - **Username Check**: Verifies if the current user is a default virtualization user.
+- **Recent User Activity**: Checks users activity if its less then 20 files, exit.
+- **USB Mount**: Check if usb was ever plugged in computer before.
 
 ### Anti-Debug
 
@@ -27,6 +29,8 @@ This module includes functions to detect and prevent debugging and analysis of t
 - **Parent Anti-Debug**: Detects if the parent process is attempting to debug the current process.
 - **Kill Bad Processes**: Terminates known malicious processes detected on the system.
 - **Detects Usermode AntiAntiDebuggers**: ScyllaHide.. (BASIC)
+- **Internet Connection Check**: Check if internet connection is present.
+
 ### Process
 
 This module focuses on critical processes that should be monitored or protected.
@@ -35,11 +39,6 @@ This module focuses on critical processes that should be monitored or protected.
 # Quick Nutshell
 - Detecting Most Anti Anti-Debugging Hooking Methods on Common Anti-Debugging Functions by checking for Bad Instructions on Functions Addresses (Most Effective on x64) and it detects user-mode anti anti-debuggers like scyllahide, and it can also detect some sandboxes which uses hooking to monitor application behaviour/activity (like [Tria.ge](https://tria.ge/))
 
-# V1.0.5 (soon)
-- usb check
-- internet check
-- recent file activity
-- soon more but codes are uploaded but not pushed yet.
 ## Credits:
 - https://github.com/AdvDebug = Inspired me to start making this package, without him it wouldnt be here, check out his github.
 - https://github.com/MmCopyMemory = Giving ideas and many more, check out his github.
