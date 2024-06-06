@@ -1,5 +1,6 @@
 @Echo off
 title DOWNLOADING MODULES
+go get github.com/EvilBytecode/GoDefender@v1.0.3
 go get github.com/EvilBytecode/GoDefender/AntiVirtualization/TriageDetection
 go get github.com/EvilBytecode/GoDefender/AntiVirtualization/MonitorMetrics
 go get github.com/EvilBytecode/GoDefender/AntiVirtualization/VirtualboxDetection
@@ -15,5 +16,4 @@ go get github.com/EvilBytecode/GoDefender/AntiDebug/ParentAntiDebug
 go get github.com/EvilBytecode/GoDefender/AntiDebug/KillBadProcesses
 go get github.com/EvilBytecode/GoDefender/Process/CriticalProcess
 go get github.com/EvilBytecode/GoDefender/AntiDebug/UserAntiAntiDebug
-go get github.com/EvilBytecode/GoDefender/AntiVirtualization/VMArtifacts
 pause
