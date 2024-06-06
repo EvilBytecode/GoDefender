@@ -19,6 +19,7 @@ import (
 	"github.com/EvilBytecode/GoDefender/AntiDebug/RunningProcesses"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/ParentAntiDebug"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/KillBadProcesses"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/UserAntiAntiDebug"
 
 	// Process Related
 	"github.com/EvilBytecode/GoDefender/Process/CriticalProcess"
