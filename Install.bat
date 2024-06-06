@@ -15,4 +15,5 @@ go get github.com/EvilBytecode/GoDefender/AntiDebug/ParentAntiDebug
 go get github.com/EvilBytecode/GoDefender/AntiDebug/KillBadProcesses
 go get github.com/EvilBytecode/GoDefender/Process/CriticalProcess
 go get github.com/EvilBytecode/GoDefender/AntiDebug/UserAntiAntiDebug
+go get github.com/EvilBytecode/GoDefender/AntiVirtualization/VMArtifacts
 pause
