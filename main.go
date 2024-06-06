@@ -37,6 +37,7 @@ func main() {
 	- KillBlacklisted Proceseses
 	- Parent AntiDebug
 	*/
+	userantiantidebug.AntiAntiDebug()
         IsDebuggerPresent.IsDebuggerPresent()
 	remotedebuggercheck.RemoteDebugger()
 	pcuptime.CheckUptime(1200)
@@ -65,7 +66,6 @@ func main() {
 	}
 	usernamecheck.CheckForBlacklistedNames()
         artifactsdetector.BadVMFilesDetection()
-	userantiantidebug.AntiAntiDebug()
 	fmt.Println("IF YOURE HERE YOU PASSED LOL")
 	/*
 	EXTRA THINGS NOW:
