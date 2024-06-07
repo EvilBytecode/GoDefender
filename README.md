@@ -39,6 +39,14 @@ This module focuses on critical processes that should be monitored or protected.
 - **Critical Process**: Implements functionality to manage critical processes essential for system operation.
 - **SetDebugPrivilege**: Grants better permissions.
 
+### TODO (V1.0.6 Plans):
+- Check Disk / RAM (If disk size is less than 100GB, exit; and if RAM size is less than 6GB, exit).
+- Flags and artifacts.
+- Execution time is lame, but I guess it can be added as well.
+- Hiding threads through (NtSetInformationThread).
+- Theres probably more, but i cant think of any right now.
+
+
 ### Quick Nutshell
 
 - Detects most anti-anti-debugging hooking methods on common anti-debugging functions by checking for bad instructions on function addresses (most effective on x64). It also detects user-mode anti-anti-debuggers like ScyllaHide and can detect some sandboxes that use hooking to monitor application behavior/activity (like [Tria.ge](https://tria.ge/)).
