@@ -39,13 +39,6 @@ This module focuses on critical processes that should be monitored or protected.
 - **Critical Process**: Implements functionality to manage critical processes essential for system operation.
 - **SetDebugPrivilege**: Grants better permissions.
 
-### TODO (V1.0.6 Plans):
-- Check Disk / RAM (If disk size is less than 100GB, exit; and if RAM size is less than 6GB, exit).
-- Flags and artifacts.
-- Execution time is lame, but I guess it can be added as well.
-- Hiding threads through (NtSetInformationThread).
-- Theres probably more, but i cant think of any right now.
-
 
 ### Quick Nutshell
 
@@ -55,3 +48,12 @@ This module focuses on critical processes that should be monitored or protected.
 
 - https://github.com/AdvDebug: Inspired me to start making this package. Without him, it wouldn't be here. Check out his GitHub.
 - https://github.com/MmCopyMemory: Provided ideas and much more. Check out his GitHub.
+- I made this because I noticed someone was trying to crack or analyze my other Go programs. Previously, I had many lines of anti-debugging code (I coded lazily and put everything into one), so I wanted to create something quick and reliable that would make a reverse engineer's life harder. Thus, I made GoDefender.
+
+
+### TODO (V1.0.6 Plans):
+- Check Disk / RAM (If disk size is less than 100GB, exit; and if RAM size is less than 6GB, exit).
+- Flags and artifacts.
+- Execution time is lame, but I guess it can be added as well.
+- Hiding threads through (NtSetInformationThread).
+- Theres probably more, but i cant think of any right now.
