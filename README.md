@@ -4,18 +4,19 @@
 
 ## GoDefender
 
-This Go package provides functionality to detect and defend against various forms of debugging tools, virtualization environments.
-btw for quick setup run install.bat
+This Go package provides functionality to detect and defend against various forms of debugging tools and virtualization environments.
+By the way, for quick setup, run `install.bat`.
+
 ### Anti-Virtualization
 
 - **Triage Detection**: Detects if the system is running in a triage or analysis environment.
 - **Monitor Metrics**: Monitors system metrics to identify abnormal behavior indicative of virtualization.
 - **VirtualBox Detection**: Detects the presence of Oracle VirtualBox.
-- **VMWare Detection**: Detects the presence of VMware virtualization software.
+- **VMware Detection**: Detects the presence of VMware virtualization software.
 - **KVM Check**: Checks for Kernel-based Virtual Machine (KVM) hypervisor.
 - **Username Check**: Verifies if the current user is a default virtualization user.
-- **Recent User Activity**: Checks users activity if its less then 20 files, exit.
-- **USB Mount**: Check if usb was ever plugged in computer before.
+- **Recent User Activity**: Checks user activity; if there are fewer than 20 files, it exits.
+- **USB Mount**: Checks if a USB was ever plugged into the computer before.
 
 ### Anti-Debug
 
@@ -28,17 +29,21 @@ This module includes functions to detect and prevent debugging and analysis of t
 - **Running Processes**: Retrieves a list of running processes and identifies potential malicious ones.
 - **Parent Anti-Debug**: Detects if the parent process is attempting to debug the current process.
 - **Kill Bad Processes**: Terminates known malicious processes detected on the system.
-- **Detects Usermode AntiAntiDebuggers**: ScyllaHide.. (BASIC)
-- **Internet Connection Check**: Check if internet connection is present.
+- **Detects Usermode AntiAntiDebuggers**: Detects user-mode anti-anti-debuggers like ScyllaHide (BASIC).
+- **Internet Connection Check**: Checks if an internet connection is present.
 
 ### Process
 
 This module focuses on critical processes that should be monitored or protected.
+
 - **Critical Process**: Implements functionality to manage critical processes essential for system operation.
 - **SetDebugPrivilege**: Grants better permissions.
-# Quick Nutshell
-- Detecting Most Anti Anti-Debugging Hooking Methods on Common Anti-Debugging Functions by checking for Bad Instructions on Functions Addresses (Most Effective on x64) and it detects user-mode anti anti-debuggers like scyllahide, and it can also detect some sandboxes which uses hooking to monitor application behaviour/activity (like [Tria.ge](https://tria.ge/))
 
-## Credits:
-- https://github.com/AdvDebug = Inspired me to start making this package, without him it wouldnt be here, check out his github.
-- https://github.com/MmCopyMemory = Giving ideas and many more, check out his github.
+### Quick Nutshell
+
+- Detects most anti-anti-debugging hooking methods on common anti-debugging functions by checking for bad instructions on function addresses (most effective on x64). It also detects user-mode anti-anti-debuggers like ScyllaHide and can detect some sandboxes that use hooking to monitor application behavior/activity (like [Tria.ge](https://tria.ge/)).
+
+## Credits
+
+- https://github.com/AdvDebug: Inspired me to start making this package. Without him, it wouldn't be here. Check out his GitHub.
+- https://github.com/MmCopyMemory: Provided ideas and much more. Check out his GitHub.
