@@ -21,6 +21,10 @@ import (
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/UsernameCheck"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VirtualboxDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMWareDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/USBCheck"
+	
+	// ProcessRelatedTool
+	"github.com/EvilBytecode/GoDefender/Process/CriticalProcess"
 )
 
 func main() {
@@ -106,6 +110,16 @@ func main() {
 	} else {
 		log.Println("[DEBUG] Screen size is not small")
 	}
-
-	// Continue with other checks... (you can add ones related to critical process or sedebugprivvilege)
+	// USBCheck
+	if usbPluggedIn, err := USBCheck.PluggedIn(); err != nil {
+			log.Println("[DEBUG] Error checking USB devices:", err)
+	} else if usbPluggedIn {
+			log.Println("[DEBUG] USB devices have been plugged in, check passed.")
+	} else {
+			log.Println("[DEBUG] No USB devices detected")
+	}
+	
+	//PROGRAM RELATED TOOLS (need admin)
+	programutils.SetDebugPrivilege()
+	programutils.SetProcessCritical()
 }
