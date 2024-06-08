@@ -1,83 +1,111 @@
 package main
 
 import (
-	"fmt"
-	"os"
-	// Anti-Virtualization
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/TriageDetection"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/MonitorMetrics"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VirtualboxDetection"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMWareDetection"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/KVMCheck"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/UsernameCheck"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/USBCheck"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/RecentFileActivity"
+	"log"
 
+	// AntiDebug
+	"GoDefenderREWRITE/AntiDebug/CheckBlacklistedWindowsNames"
+	"GoDefenderREWRITE/AntiDebug/InternetCheck"
+	"GoDefenderREWRITE/AntiDebug/IsDebuggerPresent"
+	"GoDefenderREWRITE/AntiDebug/KillBadProcesses"
+	"GoDefenderREWRITE/AntiDebug/ParentAntiDebug"
+	"GoDefenderREWRITE/AntiDebug/RunningProcesses"
+	"GoDefenderREWRITE/AntiDebug/RemoteDebugger"
+	"GoDefenderREWRITE/AntiDebug/pcuptime"
 
-	// Anti-Debug
-	"github.com/EvilBytecode/GoDefender/AntiDebug/IsDebuggerPresent"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/RemoteDebugger"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/pcuptime"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/CheckBlacklistedWindowsNames"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/RunningProcesses"
-	//"github.com/EvilBytecode/GoDefender/AntiDebug/ParentAntiDebug"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/KillBadProcesses"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/UserAntiAntiDebug"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/InternetCheck"
-
-	// Process Related
-	//"github.com/EvilBytecode/GoDefender/Process/CriticalProcess"
+	// AntiVirtualization
+	"GoDefenderREWRITE/AntiVirtualization/KVMCheck"
+	"GoDefenderREWRITE/AntiVirtualization/MonitorMetrics"
+	"GoDefenderREWRITE/AntiVirtualization/RecentFileActivity"
+	"GoDefenderREWRITE/AntiVirtualization/TriageDetection"
+	"GoDefenderREWRITE/AntiVirtualization/UsernameCheck"
+	"GoDefenderREWRITE/AntiVirtualization/VirtualboxDetection"
+	"GoDefenderREWRITE/AntiVirtualization/VMWareDetection"
 )
 
 func main() {
-	/* 
-	ANTIDEBUG
-	-----------
-	- IsDebuggerPresent
-	- RemoteDebugger
-	- PC Uptime Check
-	- Running Proccesses Count
-	- Check blacklisted windows
-	- KillBlacklisted Proceseses
-	- Parent AntiDebug
-	*/
-	RecentFileActivity.RecentFileActivityCheck()
-	USBCheck.PluggedIn()
-	userantiantidebug.AntiAntiDebug()
-        IsDebuggerPresent.IsDebuggerPresent()
-	remotedebuggercheck.RemoteDebugger()
-	pcuptime.CheckUptime(1200)
-	runningprocesses.CheckRunningProcessesCount(50)
-        blacklistcheck.CheckBlacklistedWindows()
-	//parentantidebug.ParentAntiDebug()
-	processkiller.KillProcesses()
-
-	/* 
-	AntiVirulization
-	----------------
-	- Triage Check
-	- VMWare Check
-	- Anti KVM
-	- Username Check
-	- 
-	*/
-
-	InternetCheck.CheckConnection()
-	triagecheck.TriageCheckDebug()
-	MonitorMetrics.IsScreenSmall()
-	VirtualboxDetection.GraphicsCardCheck()
-	fmt.Println("Debug Check: VirtualBox isnt present")
-	VMWare.GraphicsCardCheck()
-	fmt.Println("Debug Check: VMWare isnt present")
-	if kvmcheck.CheckForKVM() {
-		os.Exit(-1)
+	// AntiDebug checks
+	if connected, _ := InternetCheck.CheckConnection(); connected {
+		log.Println("[DEBUG] Internet connection is present")
+	} else {
+		log.Println("[DEBUG] Internet connection isn't present")
 	}
-	usernamecheck.CheckForBlacklistedNames()
-	fmt.Println("IF YOURE HERE YOU PASSED LOL")
-	/*
-	EXTRA THINGS NOW:
-	*/
-	//programutils.SetDebugPrivilege() this is for devs who plan on continuing
-	//programutils.SetProcessCritical() // this automatically gets the SeDebugPrivillige
-	fmt.Scanln()
+
+	if parentAntiDebugResult := ParentAntiDebug.ParentAntiDebug(); parentAntiDebugResult {
+		log.Println("[DEBUG] ParentAntiDebug check failed")
+	} else {
+		log.Println("[DEBUG] ParentAntiDebug check passed")
+	}
+
+	if runningProcessesCountDetected, _ := RunningProcesses.CheckRunningProcessesCount(50); runningProcessesCountDetected {
+		log.Println("[DEBUG] Running processes count detected")
+	} else {
+		log.Println("[DEBUG] Running processes count passed")
+	}
+
+	if pcUptimeDetected, _ := pcuptime.CheckUptime(1200); pcUptimeDetected {
+		log.Println("[DEBUG] PC uptime detected")
+	} else {
+		log.Println("[DEBUG] PC uptime passed")
+	}
+
+	KillBadProcesses.KillProcesses()
+	CheckBlacklistedWindowsNames.CheckBlacklistedWindows()
+	// Other AntiDebug checks
+	if isDebuggerPresentResult := IsDebuggerPresent.IsDebuggerPresent1(); isDebuggerPresentResult {
+		log.Println("[DEBUG] Debugger presence detected")
+	} else {
+		log.Println("[DEBUG] Debugger presence passed")
+	}
+
+	if remoteDebuggerDetected, _ := RemoteDebugger.RemoteDebugger(); remoteDebuggerDetected {
+		log.Println("[DEBUG] Remote debugger detected")
+	} else {
+		log.Println("[DEBUG] Remote debugger passed")
+	}
+	//////////////////////////////////////////////////////
+
+	// AntiVirtualization checks
+	if recentFileActivityDetected, _ := RecentFileActivity.RecentFileActivityCheck(); recentFileActivityDetected {
+		log.Println("[DEBUG] Recent file activity detected")
+	} else {
+		log.Println("[DEBUG] Recent file activity passed")
+	}
+
+	if vmwareDetected, _ := VMWareDetection.GraphicsCardCheck(); vmwareDetected {
+		log.Println("[DEBUG] VMWare detected")
+	} else {
+		log.Println("[DEBUG] VMWare passed")
+	}
+
+	if virtualboxDetected, _ := VirtualboxDetection.GraphicsCardCheck(); virtualboxDetected {
+		log.Println("[DEBUG] Virtualbox detected")
+	} else {
+		log.Println("[DEBUG] Virtualbox passed")
+	}
+
+	if kvmDetected, _ := KVMCheck.CheckForKVM(); kvmDetected {
+		log.Println("[DEBUG] KVM detected")
+	} else {
+		log.Println("[DEBUG] KVM passed")
+	}
+
+	if blacklistedUsernameDetected := UsernameCheck.CheckForBlacklistedNames(); blacklistedUsernameDetected {
+		log.Println("[DEBUG] Blacklisted username detected")
+	} else {
+		log.Println("[DEBUG] Blacklisted username passed")
+	}
+
+	if triageDetected, _ := TriageDetection.TriageCheck(); triageDetected {
+		log.Println("[DEBUG] Triage detected")
+	} else {
+		log.Println("[DEBUG] Triage passed")
+	}
+	if isScreenSmall, _ := MonitorMetrics.IsScreenSmall(); isScreenSmall {
+		log.Println("[DEBUG] Screen size is small")
+	} else {
+		log.Println("[DEBUG] Screen size is not small")
+	}
+
+	// Continue with other checks... (you can add ones related to critical process or sedebugprivvilege)
 }
