@@ -24,7 +24,7 @@ import (
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/USBCheck"
 	
 	// ProcessRelatedTool
-	"github.com/EvilBytecode/GoDefender/Process/CriticalProcess"
+	//"github.com/EvilBytecode/GoDefender/Process/CriticalProcess"
 )
 
 func main() {
@@ -120,6 +120,6 @@ func main() {
 	}
 	
 	//PROGRAM RELATED TOOLS (need admin)
-	programutils.SetDebugPrivilege()
-	programutils.SetProcessCritical()
+	//programutils.SetDebugPrivilege()
+	//programutils.SetProcessCritical()
 }
