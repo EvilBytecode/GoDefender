@@ -1,22 +1,24 @@
 package RecentFileActivity
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"io/ioutil"
 	"path/filepath"
 )
 
-func RecentFileActivityCheck() {
+// RecentFileActivityCheck checks recent file activity.
+func RecentFileActivityCheck() (bool, error) {
 	recdir := filepath.Join(os.Getenv("APPDATA"), "microsoft", "windows", "recent")
 	files, err := ioutil.ReadDir(recdir)
 	if err != nil {
-		fmt.Println("Debug Check: ermm error:", err)
-		return
+		log.Printf("Debug Check: Error reading recent file activity directory: %v", err)
+		return false, err
 	}
+
 	if len(files) < 20 {
-		fmt.Println("Debug Check: RECENT FILE ACTIVITY CHECK FAILED!")
-	    os.Exit(-1)
+		return true, nil
 	}
-	fmt.Println("Debug Check: Recent file activity check passed!")
+
+	return false, nil
 }

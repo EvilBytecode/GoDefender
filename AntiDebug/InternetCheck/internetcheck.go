@@ -1,17 +1,23 @@
 package InternetCheck
 
 import (
-    "fmt"
-    "net"
-    "os"
+	"log"
+	"net"
+	"errors"
 )
 
-func CheckConnection() {
-    _, err := net.Dial("tcp", "google.com:80")
-    if err == nil {
-        fmt.Println("Debug Check: [!] Internet connection is active.")
-    } else {
-        fmt.Println("Debug Check: INTERNET CONNECTION CHECK FAILED!")
-        os.Exit(-1)
-    }
+func CheckConnection() (bool, error) {
+	conn, err := net.Dial("tcp", "google.com:80")
+	if err != nil {
+		err = errors.New("error checking internet connection: " + err.Error())
+		log.Printf("[DEBUG] Error checking internet connection: %v", err)
+		return false, err
+	}
+	defer func() {
+		if cerr := conn.Close(); cerr != nil {
+			log.Printf("[DEBUG] Error closing connection: %v", cerr)
+		}
+	}()
+
+	return true, nil
 }

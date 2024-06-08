@@ -1,7 +1,7 @@
-package userantiantidebug
+package HooksDetection
 
 import (
-	"fmt"
+	"log"
 	"syscall"
 	"unsafe"
 )
@@ -144,5 +144,5 @@ func DetectHooksOnCommonWinAPIFunctions(moduleName string, functions []string) b
 }
 
 func AntiAntiDebug() {
-	fmt.Println("Detecting Hooks on Common WinAPI Functions by checking for Bad Instructions on Functions Addresses (Most Effective on x64): ", DetectHooksOnCommonWinAPIFunctions("", nil))
+	log.Println("Detecting Hooks on Common WinAPI Functions by checking for Bad Instructions on Functions Addresses (Most Effective on x64): ", DetectHooksOnCommonWinAPIFunctions("", nil))
 }

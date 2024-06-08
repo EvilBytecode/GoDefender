@@ -1,26 +1,24 @@
-package kvmcheck
+package KVMCheck
 
 import (
+	"log"
 	"os"
-	"fmt"
 	"path/filepath"
 )
 
 // CheckForKVM checks for the presence of Kernel-based Virtual Machine (KVM) components.
 // It returns true if KVM components are detected, otherwise false.
-func CheckForKVM() bool {
+func CheckForKVM() (bool, error) {
 	badDriversList := []string{"balloon.sys", "netkvm.sys", "vioinput", "viofs.sys", "vioser.sys"}
 	for _, driver := range badDriversList {
 		files, err := filepath.Glob(filepath.Join(os.Getenv("SystemRoot"), "System32", driver))
 		if err != nil {
-			fmt.Println("Debug Check: Error accessing system files:", err)
+			log.Printf("Error accessing system files for %s: %v", driver, err)
 			continue
 		}
 		if len(files) > 0 {
-			fmt.Println("Debug Check: Kernel-based Virtual Machine (KVM) components detected:", driver)
-			return true
+			return true, nil
 		}
 	}
-	fmt.Println("Debug Check: No Kernel-based Virtual Machine (KVM) components detected.")
-	return false
+	return false, nil
 }

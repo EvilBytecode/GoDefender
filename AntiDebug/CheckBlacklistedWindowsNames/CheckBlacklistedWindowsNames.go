@@ -1,7 +1,7 @@
-package blacklistcheck
+package CheckBlacklistedWindowsNames
 
 import (
-    "fmt"
+    "log"
     "syscall"
     "unsafe"
 )
@@ -52,7 +52,7 @@ func enumWindowsProc(hwnd syscall.Handle, lParam uintptr) uintptr {
     // Check if the window title contains any blacklisted strings
     for _, blacklisted := range blacklistedWindows {
         if contains(wt, blacklisted) {
-            fmt.Printf("Detected blacklisted window: %s\n", wt)
+            log.Printf("Detected blacklisted window: %s\n", wt)
             // If a blacklisted window is found, terminate the associated process
             proc, _, _ := pop.Call(syscall.PROCESS_TERMINATE, 0, uintptr(pid))
             if proc != 0 {

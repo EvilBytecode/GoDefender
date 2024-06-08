@@ -1,4 +1,4 @@
-package processkiller
+package KillBadProcesses
 
 import (
 	"os/exec"

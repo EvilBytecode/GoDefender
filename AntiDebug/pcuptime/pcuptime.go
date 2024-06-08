@@ -1,9 +1,6 @@
-// pcuptime.go
 package pcuptime
 
 import (
-    "fmt"
-    "os"
     "syscall"
 )
 
@@ -12,19 +9,25 @@ var (
     getTickCount = kernel32DLL.NewProc("GetTickCount")
 )
 
-// GetUptimeInSeconds returns the system uptime in seconds, predefined one is 1200 which is 20mins.
-func GetUptimeInSeconds() int {
-    uptime, _, _ := getTickCount.Call()
-    return int(uptime / 1000)
+// GetUptimeInSeconds returns the system uptime in seconds.
+func GetUptimeInSeconds() (int, error) {
+    uptime, _, err := getTickCount.Call()
+    if err != nil && err.Error() != "The operation completed successfully." {
+        return 0, err
+    }
+    return int(uptime / 1000), nil
 }
 
-// CheckUptime checks if the system uptime is less than a specified duration in seconds and prints a message.
-func CheckUptime(durationInSeconds int) {
-    uptime := GetUptimeInSeconds()
+// CheckUptime checks if the system uptime is less than a specified duration in seconds.
+func CheckUptime(durationInSeconds int) (bool, error) {
+    uptime, err := GetUptimeInSeconds()
+    if err != nil {
+        return false, err
+    }
+
     if uptime < durationInSeconds {
-        fmt.Println("Debug Check: System uptime is less than the specified duration.")
-        os.Exit(-1)
+        return true, nil
     } else {
-        fmt.Println("Debug Check: System uptime is greater than or equal to the specified duration.")
+        return false, nil
     }
 }
