@@ -37,7 +37,7 @@ This module includes functions to detect and prevent debugging and analysis of t
 This module focuses on critical processes that should be monitored or protected.
 
 - **Critical Process**: Implements functionality to manage critical processes essential for system operation.
-- **SetDebugPrivilege**: Grants better permissions.
+- **SeDebugPrivilege**: Grants better permissions.
 
 
 ### Quick Nutshell
