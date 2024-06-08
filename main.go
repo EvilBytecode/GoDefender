@@ -4,23 +4,23 @@ import (
 	"log"
 
 	// AntiDebug
-	"GoDefenderREWRITE/AntiDebug/CheckBlacklistedWindowsNames"
-	"GoDefenderREWRITE/AntiDebug/InternetCheck"
-	"GoDefenderREWRITE/AntiDebug/IsDebuggerPresent"
-	"GoDefenderREWRITE/AntiDebug/KillBadProcesses"
-	"GoDefenderREWRITE/AntiDebug/ParentAntiDebug"
-	"GoDefenderREWRITE/AntiDebug/RunningProcesses"
-	"GoDefenderREWRITE/AntiDebug/RemoteDebugger"
-	"GoDefenderREWRITE/AntiDebug/pcuptime"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/CheckBlacklistedWindowsNames"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/InternetCheck"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/IsDebuggerPresent"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/KillBadProcesses"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/ParentAntiDebug"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/RunningProcesses"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/RemoteDebugger"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/pcuptime"
 
 	// AntiVirtualization
-	"GoDefenderREWRITE/AntiVirtualization/KVMCheck"
-	"GoDefenderREWRITE/AntiVirtualization/MonitorMetrics"
-	"GoDefenderREWRITE/AntiVirtualization/RecentFileActivity"
-	"GoDefenderREWRITE/AntiVirtualization/TriageDetection"
-	"GoDefenderREWRITE/AntiVirtualization/UsernameCheck"
-	"GoDefenderREWRITE/AntiVirtualization/VirtualboxDetection"
-	"GoDefenderREWRITE/AntiVirtualization/VMWareDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/KVMCheck"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/MonitorMetrics"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/RecentFileActivity"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/TriageDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/UsernameCheck"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VirtualboxDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMWareDetection"
 )
 
 func main() {
