@@ -51,9 +51,8 @@ This module focuses on critical processes that should be monitored or protected.
 - I made this because I noticed someone was trying to crack or analyze my other Go programs. Previously, I had many lines of anti-debugging code (I coded lazily and put everything into one), so I wanted to create something quick and reliable that would make a reverse engineer's life harder. Thus, I made GoDefender.
 
 
-### TODO (V1.0.6 Plans):
-- Check Disk / RAM (If disk size is less than 100GB, exit; and if RAM size is less than 6GB, exit).
-- Flags and artifacts.
-- Execution time is lame, but I guess it can be added as well.
-- Hiding threads through (NtSetInformationThread).
-- Theres probably more, but i cant think of any right now.
+## Updates that are visible on repo but arent pushed as new version:
+- Patching DLL (Migitation Policy)
+- QEMU Detection
+- Parallels Check
+- VM Artifacts
