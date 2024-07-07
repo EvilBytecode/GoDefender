@@ -18,6 +18,10 @@ By the way, for quick setup, run `install.bat`.
 - **Username Check**: Verifies if the current user is a default virtualization user.
 - **Recent User Activity**: Checks user activity; if there are fewer than 20 files, it exits.
 - **USB Mount**: Checks if a USB was ever plugged into the computer before.
+- **VM Artifacts**: Identifies artifacts left behind by virtual machines (VMs), which can indicate the presence of a VM environment.
+- **Parallels Check**: Detects Parallels Desktop, a popular virtualization software for macOS, used to run Windows and other guest operating systems.
+- **QEMU Detection**: Identifies the presence of QEMU, an open-source machine emulator and virtualizer, which may indicate virtual machine detection.
+- **Patching Dll**: Taking Advantage of Binary Image Signature Mitigation Policy to prevent injecting Non-Microsoft Binaries.
 
 ### Anti-Debug
 
@@ -29,17 +33,16 @@ This module includes functions to detect and prevent debugging and analysis of t
 - **Check Blacklisted Windows Names**: Verifies if the process name matches any blacklisted names commonly used by debuggers.
 - **Running Processes**: Retrieves a list of running processes and identifies potential malicious ones.
 - **Parent Anti-Debug**: Detects if the parent process is attempting to debug the current process.
-- **Kill Bad Processes**: Terminates known malicious processes detected on the system.
-- **Detects Usermode AntiAntiDebuggers**: Detects user-mode anti-anti-debuggers like ScyllaHide (BASIC).
+- **Check for bad Processes**: if detected on the system, do something based on your option (bool).
+- **Detects Usermode AntiAntiDebuggers**: Detects user-mode anti-anti-debuggers like ScyllaHide (BASIC / VMP Plugin).
 - **Internet Connection Check**: Checks if an internet connection is present.
 
-### Process
-
-This module focuses on critical processes that should be monitored or protected.
-
+### ProcessUtils
+ProcessUtils you probably need for you app
 - **Critical Process**: Implements functionality to manage critical processes essential for system operation.
-- **SeDebugPrivilege**: Grants better permissions.
-
+- **Set Runtime**: Set the app runtime to specified one: ```MacOS,Linux,Windows```
+- **Enable All Tokens**: Enable all tokens Windows privileges for current process
+- **IsAdmin - Request Admin**: Request admin for current process, and Check if current process is Admin
 
 ### Quick Nutshell
 
@@ -51,9 +54,3 @@ This module focuses on critical processes that should be monitored or protected.
 - https://github.com/MmCopyMemory: Provided ideas and much more. Check out his GitHub.
 - I made this because I noticed someone was trying to crack or analyze my other Go programs. Previously, I had many lines of anti-debugging code (I coded lazily and put everything into one), so I wanted to create something quick and reliable that would make a reverse engineer's life harder. Thus, I made GoDefender.
 
-
-## Added V1.0.7
-- Patching DLL (Migitation Policy)
-- QEMU Detection
-- Parallels Check
-- VM Artifacts
