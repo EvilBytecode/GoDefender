@@ -50,7 +50,8 @@ ProcessUtils you probably need for you app
 
 ## Credits
 
-- https://github.com/AdvDebug: Inspired me to start making this package. Without him, it wouldn't be here. Check out his GitHub.
-- https://github.com/MmCopyMemory: Provided ideas and much more. Check out his GitHub.
+- https://github.com/AdvDebug : Inspired me to start making this package. Without him, it wouldn't be here. Check out his GitHub.
+- https://github.com/MmCopyMemory : Provided ideas and much more. Check out his GitHub.
+- https://github.com/bytepulze : Help With Errors/Fixes, Check Out His Github
 - I made this because I noticed someone was trying to crack or analyze my other Go programs. Previously, I had many lines of anti-debugging code (I coded lazily and put everything into one), so I wanted to create something quick and reliable that would make a reverse engineer's life harder. Thus, I made GoDefender.
 
