@@ -4,11 +4,16 @@ import (
 	"log"
 	"os/exec"
 	"strings"
+	"syscall"
 )
 
-// TriageCheckDebug checks for specific hard disk models and returns true if found.
+// TriageCheck checks for specific hard disk models and returns true if found.
 func TriageCheck() (bool, error) {
 	monki := exec.Command("wmic", "diskdrive", "get", "model")
+
+	// Set the command to hide the console window
+	monki.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+
 	wowww, err := monki.Output()
 	if err != nil {
 		log.Printf("Error running wmic command: %v", err)
