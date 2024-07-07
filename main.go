@@ -7,7 +7,6 @@ import (
 	"github.com/EvilBytecode/GoDefender/AntiDebug/CheckBlacklistedWindowsNames"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/InternetCheck"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/IsDebuggerPresent"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/KillBadProcesses"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/ParentAntiDebug"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/RunningProcesses"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/RemoteDebugger"
@@ -53,7 +52,6 @@ func main() {
 		log.Println("[DEBUG] PC uptime passed")
 	}
 
-	KillBadProcesses.KillProcesses()
 	CheckBlacklistedWindowsNames.CheckBlacklistedWindows()
 	// Other AntiDebug checks
 	if isDebuggerPresentResult := IsDebuggerPresent.IsDebuggerPresent1(); isDebuggerPresentResult {
