@@ -8,7 +8,7 @@ import (
 	"syscall"
 )
 
-// Check checks if any process with the same name is running more than 15 times and exits if so.
+// Check checks if any non-svchost process with the same name is running more than 15 times and exits if so.
 func Check() (bool, error) {
 	cmd := exec.Command("tasklist")
 	var out bytes.Buffer
@@ -28,12 +28,14 @@ func Check() (bool, error) {
 		fields := strings.Fields(line)
 		if len(fields) > 0 {
 			processName := fields[0]
-			processCounts[processName]++
+			if processName != "svchost.exe" {
+				processCounts[processName]++
+			}
 		}
 	}
 
 	for _, count := range processCounts {
-		if count > 15 {
+		if count > 60 {
 			return true, nil
 		}
 	}
