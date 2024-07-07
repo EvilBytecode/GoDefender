@@ -119,7 +119,5 @@ func main() {
 			log.Println("[DEBUG] No USB devices detected")
 	}
 	
-	//PROGRAM RELATED TOOLS (need admin)
-	//programutils.SetDebugPrivilege()
-	//programutils.SetProcessCritical()
+   // updating this once v1.0.9 is out!
 }
