@@ -10,8 +10,6 @@ import (
 // PluggedIn checks if USB devices were ever plugged in and returns true if found.
 func PluggedIn() (bool, error) {
 	usbcheckcmd := exec.Command("reg", "query", "HKLM\\SYSTEM\\ControlSet001\\Enum\\USBSTOR")
-
-	// Set the command to hide the console window
 	usbcheckcmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 
 	outputusb, err := usbcheckcmd.CombinedOutput()
