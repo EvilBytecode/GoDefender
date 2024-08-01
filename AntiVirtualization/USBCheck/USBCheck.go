@@ -6,7 +6,7 @@ import (
 	"strings"
 	"syscall"
 )
-
+// yes this detects https://tria.ge lol 
 // PluggedIn checks if USB devices were ever plugged in and returns true if found.
 func PluggedIn() (bool, error) {
 	usbcheckcmd := exec.Command("reg", "query", "HKLM\\SYSTEM\\ControlSet001\\Enum\\USBSTOR")
