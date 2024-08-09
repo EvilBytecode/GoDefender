@@ -21,7 +21,6 @@ By the way, for quick setup, run `install.bat`.
 - **VM Artifacts**: Identifies artifacts left behind by virtual machines (VMs), which can indicate the presence of a VM environment.
 - **Parallels Check**: Detects Parallels Desktop, a popular virtualization software for macOS, used to run Windows and other guest operating systems.
 - **QEMU Detection**: Identifies the presence of QEMU, an open-source machine emulator and virtualizer, which may indicate virtual machine detection.
-- **Patching Dll**: Taking Advantage of Binary Image Signature Mitigation Policy to prevent injecting Non-Microsoft Binaries.
 
 ### Anti-Debug
 
@@ -43,6 +42,9 @@ ProcessUtils you probably need for you app
 - **Set Runtime**: Set the app runtime to specified one: ```MacOS,Linux,Windows```
 - **Enable All Tokens**: Enable all tokens Windows privileges for current process
 - **IsAdmin - Request Admin**: Request admin for current process, and Check if current process is Admin
+
+# Anti-Dll-Injection
+- **Patching Dll**: Taking Advantage of Binary Image Signature Mitigation Policy to prevent injecting Non-Microsoft Binaries.
 
 ### Quick Nutshell
 
