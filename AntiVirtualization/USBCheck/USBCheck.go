@@ -12,10 +12,17 @@ func PluggedIn() (bool, error) {
 	usbcheckcmd := exec.Command("reg", "query", "HKLM\\SYSTEM\\ControlSet001\\Services\\USBSTOR")
 	usbcheckcmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 
-	outputusb, err := usbcheckcmd.CombinedOutput()
+	outputusb, err1 := usbcheckcmd.CombinedOutput()
 	if err != nil {
 		log.Printf("Debug Check: Error running reg query command: %v", err)
-		return false, err
+		usbcheckcmd := exec.Command("reg", "query", "HKLM\\SYSTEM\\ControlSet001\\Enum\\USBSTOR")
+		usbcheckcmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+
+		outputusb, err2 := usbcheckcmd.CombinedOutput()
+		if err2 != nil {
+			log.Printf("Debug Check: Error running reg query command: %v", err)
+			return false, err
+		}
 	}
 
 	usblines := strings.Split(string(outputusb), "\n")
