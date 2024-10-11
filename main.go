@@ -23,7 +23,7 @@ import (
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMArtifacts"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/RepetitiveProcess"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/ParallelsCheck"
-    "github.com/EvilBytecode/GoDefender/AntiVirtualization/ComodoDetection"
+    "github.com/EvilBytecode/GoDefender/AntiVirtualization/ComodoAntivirusDetection"
     "github.com/EvilBytecode/GoDefender/AntiVirtualization/ShadowDefenderDetection"
     "github.com/EvilBytecode/GoDefender/AntiVirtualization/SandboxieDetection"
     "github.com/EvilBytecode/GoDefender/AntiVirtualization/DeepFreezeDetection"
