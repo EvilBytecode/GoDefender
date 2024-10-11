@@ -53,7 +53,8 @@ func isServiceExisting(serviceName string) bool {
     
     output, err := cmd.Output()
     if err != nil {
-        return false
+        log.Printf("Error executing WMIC command: %v\n", err)
+        // Continue execution without returning false
     }
 
     // Check if the output contains the service name
