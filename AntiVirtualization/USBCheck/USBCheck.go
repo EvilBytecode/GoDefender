@@ -19,10 +19,10 @@ func PluggedIn() (bool, error) {
 		usbcheckcmd = exec.Command("reg", "query", "HKLM\\SYSTEM\\ControlSet001\\Enum\\USBSTOR")
 		usbcheckcmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 
-		outputusb, err2 := usbcheckcmd.CombinedOutput()
-		if err2 != nil {
-			log.Printf("Debug Check: Error running reg query command: %v", err2)
-			return false, err2
+		outputusb, err1 = usbcheckcmd.CombinedOutput() // Reuse outputusb to avoid redeclaring it
+		if err1 != nil {
+			log.Printf("Debug Check: Error running reg query command: %v", err1)
+			return false, err1
 		}
 	}
 
