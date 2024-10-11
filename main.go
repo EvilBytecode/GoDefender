@@ -87,7 +87,6 @@ func ThunderKitty() {
 		os.Exit(-1)
 	}
 
-
     // Comodo Antivirus detection
     if comodoDetected := ComodoDetection.DetectComodoAntivirus(); comodoDetected {
         log.Println("[DEBUG] Comodo Antivirus detected")
