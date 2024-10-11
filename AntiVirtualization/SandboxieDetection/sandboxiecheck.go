@@ -1,7 +1,7 @@
 package SandboxieDetection
 
 import (
-    "log"
+    "fmt"
     "os"
     "os/exec"
     "strings"
@@ -53,7 +53,6 @@ func isServiceExisting(serviceName string) bool {
     
     output, err := cmd.Output()
     if err != nil {
-        log.Printf("Error executing WMIC command: %v\n", err)
         return false
     }
 
