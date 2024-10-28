@@ -27,8 +27,8 @@ import (
     "github.com/EvilBytecode/GoDefender/AntiVirtualization/ShadowDefenderDetection"
     "github.com/EvilBytecode/GoDefender/AntiVirtualization/SandboxieDetection"
     "github.com/EvilBytecode/GoDefender/AntiVirtualization/DeepFreezeDetection"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/HyperVCheck"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMPlatformCheck"	
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/HyperVDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMPlatformDetection"
 )
 
 func ThunderKitty() {
