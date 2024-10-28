@@ -1,6 +1,7 @@
 package HyperVCheck
 
 import (
+	"fmt"
 	"os/exec"
 	"strings"
 	"syscall"
