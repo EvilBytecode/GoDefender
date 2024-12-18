@@ -2,7 +2,6 @@ package BadProcesses
 
 import (
 	"bytes"
-	"log"
 	"os/exec"
 	"strings"
 )
