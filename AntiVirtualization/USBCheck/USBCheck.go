@@ -6,20 +6,21 @@ import (
 	"strings"
 	"syscall"
 )
-// yes this detects https://tria.ge lol 
+
+// yes this detects https://tria.ge lol
 // PluggedIn checks if USB devices were ever plugged in and returns true if found.
 func PluggedIn() (bool, error) {
 	usbcheckcmd := exec.Command("reg", "query", "HKLM\\SYSTEM\\ControlSet001\\Services\\USBSTOR")
 	usbcheckcmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 
-	outputusb, err1 := usbcheckcmd.CombinedOutput()
+	outputusb, err := usbcheckcmd.CombinedOutput()
 	if err != nil {
 		log.Printf("Debug Check: Error running reg query command: %v", err)
 		usbcheckcmd := exec.Command("reg", "query", "HKLM\\SYSTEM\\ControlSet001\\Enum\\USBSTOR")
 		usbcheckcmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 
-		outputusb, err2 := usbcheckcmd.CombinedOutput()
-		if err2 != nil {
+		outputusb, err = usbcheckcmd.CombinedOutput()
+		if err != nil {
 			log.Printf("Debug Check: Error running reg query command: %v", err)
 			return false, err
 		}
