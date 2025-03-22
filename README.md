@@ -1,5 +1,4 @@
 # Go Defender
-https://discord.gg/qeYaYK4JKq
 ![Go Defender](GoDefenderLogo.png)
 
 ## GoDefender
