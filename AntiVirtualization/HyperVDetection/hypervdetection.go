@@ -1,11 +1,11 @@
 package HyperVCheck
 
 import (
-	"fmt"
 	"os/exec"
 	"strings"
 	"syscall"
-	"golang.org/x/sys/windows/registry"
+    "golang.org/x/sys/windows/registry"
+	"golang.org/x/sys/windows/svc/mgr"
 )
 
 // DetectHyperV checks if Hyper-V is installed using registry, service, and process checks.
@@ -33,17 +33,27 @@ func DetectHyperV() (bool, error) {
 	return false, nil
 }
 
-// isServiceExisting checks if a specific service exists and is running
+// isServiceExisting checks if a specific service exists and is running using Windows service manager.
 func isServiceExisting(serviceName string) bool {
-	cmd := exec.Command("wmic", "service", "where", fmt.Sprintf("name='%s'", serviceName), "get", "name")
-	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	m, err := mgr.Connect()
+	if err != nil {
+		return false
+	}
+	defer m.Disconnect()
 
-	output, err := cmd.Output()
+	svc, err := m.OpenService(serviceName)
+	if err != nil {
+		return false
+	}
+	defer svc.Close()
+
+	status, err := svc.Query()
 	if err != nil {
 		return false
 	}
 
-	return strings.Contains(strings.ToLower(string(output)), strings.ToLower(serviceName))
+	// SERVICE_RUNNING = 4
+	return status.State == 4
 }
 
 // isProcessRunning checks if a specific process is running

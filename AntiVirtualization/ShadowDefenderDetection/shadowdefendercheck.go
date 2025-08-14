@@ -2,13 +2,11 @@ package ShadowDefenderDetection
 
 import (
     "bufio"
-    "fmt"
     "os"
-    "os/exec"
     "path/filepath"
     "strings"
-    "syscall"
     "golang.org/x/sys/windows/registry"
+    "golang.org/x/sys/windows/svc/mgr"
 )
 
 // DetectShadowDefender checks if Shadow Defender is installed or present.
@@ -99,21 +97,40 @@ func checkUserDatFiles() bool {
     return false
 }
 
-// checkShadowDefenderService checks for the existence of the Shadow Defender Service using WMIC.
+// checkShadowDefenderService checks for the existence of the Shadow Defender Service using Windows service manager.
 func checkShadowDefenderService() bool {
     serviceDisplayName := "Shadow Defender Service"
     return serviceExists(serviceDisplayName)
 }
 
-// serviceExists checks if a service exists using WMIC.
+// serviceExists checks if a service with the given display name exists using Windows service manager.
 func serviceExists(displayName string) bool {
-    cmd := exec.Command("wmic", "service", "where", fmt.Sprintf("DisplayName='%s'", displayName), "get", "Name")
+    m, err := mgr.Connect()
+    if err != nil {
+        return false
+    }
+    defer m.Disconnect()
 
-    // Hide the console window
-    cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
-    
-    output, err := cmd.Output()
-    return err == nil && strings.TrimSpace(string(output)) != ""
+    services, err := m.ListServices()
+    if err != nil {
+        return false
+    }
+
+    for _, svcName := range services {
+        s, err := m.OpenService(svcName)
+        if err != nil {
+            continue
+        }
+        config, err := s.Config()
+        s.Close()
+        if err != nil {
+            continue
+        }
+        if config.DisplayName == displayName {
+            return true
+        }
+    }
+    return false
 }
 
 // fileContainsKeyword checks if a file contains a specific keyword.

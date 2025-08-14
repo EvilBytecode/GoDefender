@@ -15,12 +15,17 @@ type PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY struct {
 }
 
 var (
-	modkernelbase                 = syscall.NewLazyDLL("kernelbase.dll")
-	procSetProcessMitigationPolicy = modkernelbase.NewProc("SetProcessMitigationPolicy")
+	modkernel32                    = syscall.NewLazyDLL("kernel32.dll")
+	procSetProcessMitigationPolicy = modkernel32.NewProc("SetProcessMitigationPolicy")
 )
 
+// SetProcessMitigationPolicy calls the Windows API SetProcessMitigationPolicy
 func SetProcessMitigationPolicy(policy int, lpBuffer *PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY, size uint32) (bool, error) {
-	ret, _, err := procSetProcessMitigationPolicy.Call(uintptr(policy),uintptr(unsafe.Pointer(lpBuffer)),uintptr(size),)
+	ret, _, err := procSetProcessMitigationPolicy.Call(
+		uintptr(policy),
+		uintptr(unsafe.Pointer(lpBuffer)),
+		uintptr(size),
+	)
 	if ret != 0 {
 		return true, nil
 	}
@@ -31,20 +36,15 @@ func SetProcessMitigationPolicy(policy int, lpBuffer *PROCESS_MITIGATION_BINARY_
 }
 
 func ConfigureProcessMitigationPolicy() {
-	var OnlyMicrosoftBinaries PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY
-	OnlyMicrosoftBinaries.MicrosoftSignedOnly = 1
+	var policy PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY
+	policy.MicrosoftSignedOnly = 1
 
-	success, err := SetProcessMitigationPolicy(ProcessSignaturePolicyMitigation,
-		&OnlyMicrosoftBinaries,
-		uint32(unsafe.Sizeof(OnlyMicrosoftBinaries)),
-	)
+	ok, err := SetProcessMitigationPolicy(ProcessSignaturePolicyMitigation, &policy, uint32(unsafe.Sizeof(policy)))
 	if err != nil {
-		fmt.Println("Failed:", err.Error())
-		return
-	}
-	if success {
-		fmt.Println("Success")
+		fmt.Printf("Failed to set mitigation policy: %v\n", err)
+	} else if ok {
+		fmt.Println("Mitigation policy set successfully.")
 	} else {
-		fmt.Println("Failed")
+		fmt.Println("Failed to set mitigation policy: Unknown error.")
 	}
 }

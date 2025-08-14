@@ -1,26 +1,31 @@
 package TriageDetection
 
 import (
-	"log"
-	"os/exec"
 	"strings"
+	"os/exec"
 	"syscall"
 )
 
+const CREATE_NO_WINDOW = 0x08000000
+
 // TriageCheck checks for specific hard disk models and returns true if found.
 func TriageCheck() (bool, error) {
-	monki := exec.Command("wmic", "diskdrive", "get", "model")
+	// Modern PowerShell command to get disk drive models
+	psCmd := `Get-CimInstance -ClassName Win32_DiskDrive | Select-Object -ExpandProperty Model`
 
-	// Set the command to hide the console window
-	monki.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	cmd := exec.Command("powershell", "-NoProfile", "-Command", psCmd)
+	cmd.SysProcAttr = &syscall.SysProcAttr{
+		HideWindow:    true,
+		CreationFlags: CREATE_NO_WINDOW,
+	}
 
-	wowww, err := monki.Output()
+	output, err := cmd.Output()
 	if err != nil {
-		log.Printf("Error running wmic command: %v", err)
 		return false, err
 	}
 
-	if strings.Contains(string(wowww), "DADY HARDDISK") || strings.Contains(string(wowww), "QEMU HARDDISK") {
+	outputStr := strings.ToUpper(string(output))
+	if strings.Contains(outputStr, "DADY HARDDISK") || strings.Contains(outputStr, "QEMU HARDDISK") {
 		return true, nil
 	}
 

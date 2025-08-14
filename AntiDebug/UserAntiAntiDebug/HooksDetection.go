@@ -1,7 +1,7 @@
 package HooksDetection
 
 import (
-	"log"
+	
 	"syscall"
 	"unsafe"
 )
@@ -141,8 +141,4 @@ func DetectHooksOnCommonWinAPIFunctions(moduleName string, functions []string) b
 		}
 	}
 	return false
-}
-
-func AntiAntiDebug() {
-	log.Println("Detecting Hooks on Common WinAPI Functions by checking for Bad Instructions on Functions Addresses (Most Effective on x64): ", DetectHooksOnCommonWinAPIFunctions("", nil))
 }

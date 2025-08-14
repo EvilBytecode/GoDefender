@@ -1,6 +1,5 @@
 package VMArtifacts
 import (
-	"fmt"
 	"strings"
 	"os"
 	"path/filepath"
@@ -14,7 +13,6 @@ func VMArtifactsDetect() bool {
 	system32Folder := os.Getenv("SystemRoot") + `\System32`
 	files, err := filepath.Glob(filepath.Join(system32Folder, "*"))
 	if err != nil {
-		fmt.Printf("Error accessing System32 folder: %v\n", err)
 		return false
 	}
 

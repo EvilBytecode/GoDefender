@@ -1,7 +1,7 @@
 package KVMCheck
 
 import (
-	"log"
+	
 	"os"
 	"path/filepath"
 )
@@ -13,7 +13,6 @@ func CheckForKVM() (bool, error) {
 	for _, driver := range badDriversList {
 		files, err := filepath.Glob(filepath.Join(os.Getenv("SystemRoot"), "System32", driver))
 		if err != nil {
-			log.Printf("Error accessing system files for %s: %v", driver, err)
 			continue
 		}
 		if len(files) > 0 {

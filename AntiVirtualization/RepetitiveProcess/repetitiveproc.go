@@ -2,7 +2,7 @@ package RepetitiveProcess
 
 import (
 	"bytes"
-	"log"
+	
 	"os/exec"
 	"strings"
 	"syscall"
@@ -18,7 +18,6 @@ func Check() (bool, error) {
 
 	err := cmd.Run()
 	if err != nil {
-		log.Printf("Error running tasklist command: %v", err)
 		return false, err
 	}
 

@@ -4,8 +4,8 @@ import (
 	"os"
 	"strings"
 	"syscall"
+
 	"golang.org/x/sys/windows"
-	"fmt"
 )
 
 // IsAdmin checks if the current process is running as an administrator.
@@ -14,7 +14,8 @@ func IsAdmin() bool {
 	return ret != 0
 }
 
-// ElevateProcess attempts to elevate the process to run with administrative privileges. : https://stackoverflow.com/questions/31558066/how-to-ask-for-administer-privileges-on-windows-with-go
+// ElevateProcess attempts to elevate the process to run with administrative privileges.
+// Reference: https://stackoverflow.com/questions/31558066/how-to-ask-for-administer-privileges-on-windows-with-go
 func ElevateProcess() {
 	verb := "runas"
 	exe, _ := os.Executable()
@@ -28,8 +29,6 @@ func ElevateProcess() {
 
 	var showCmd int32 = 1 // SW_NORMAL
 
-	err := windows.ShellExecute(0, verbPtr, exePtr, argPtr, cwdPtr, showCmd)
-	if err != nil {
-		fmt.Println(err)
-	}
+	// Call ShellExecute and ignore any error
+	_ = windows.ShellExecute(0, verbPtr, exePtr, argPtr, cwdPtr, showCmd)
 }

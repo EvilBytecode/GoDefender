@@ -1,13 +1,9 @@
 package SandboxieDetection
 
 import (
-    "log"
-    "fmt"
     "os"
-    "os/exec"
-    "strings"
-    "syscall"
     "golang.org/x/sys/windows/registry"
+    "golang.org/x/sys/windows/svc/mgr"
 )
 
 // DetectSandboxie checks if Sandboxie is installed or present.
@@ -44,22 +40,20 @@ func pathExists(path string) bool {
     return !os.IsNotExist(err)
 }
 
-// isServiceExisting checks if a service exists using WMIC.
+// isServiceExisting checks if a service exists using Windows service manager.
 func isServiceExisting(serviceName string) bool {
-    // Use WMIC to check if the service exists
-    cmd := exec.Command("wmic", "service", "where", fmt.Sprintf("name='%s'", serviceName), "get", "name")
-    
-    // Set to hide the command window
-    cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
-    
-    output, err := cmd.Output()
+    m, err := mgr.Connect()
     if err != nil {
-        log.Printf("Error executing WMIC command: %v\n", err)
-        // Continue execution without returning false
+        return false // fail quietly
     }
+    defer m.Disconnect()
 
-    // Check if the output contains the service name
-    return strings.Contains(strings.ToLower(string(output)), strings.ToLower(serviceName))
+    s, err := m.OpenService(serviceName)
+    if err != nil {
+        return false // service not found
+    }
+    s.Close()
+    return true // service found
 }
 
 // checkSandboxieRegistry checks for the presence of various Sandboxie-related registry keys.

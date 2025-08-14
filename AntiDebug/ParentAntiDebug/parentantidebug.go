@@ -1,7 +1,7 @@
 package ParentAntiDebug
 
 import (
-	"log"
+	
 	"os"
 	"path/filepath"
 	"syscall"
@@ -27,11 +27,9 @@ type ProcessInfo struct {
 func NtQueryProc(handle syscall.Handle, class uint32, info *ProcessInfo, length uint32) error {
 	r1, _, err := syscall.Syscall6(ntquery.Addr(), 5, uintptr(handle), uintptr(class), uintptr(unsafe.Pointer(info)), uintptr(length), 0, 0)
 	if err != 0 {
-		log.Printf("NtQueryInformationProcess failed: %v", err)
 		return err
 	}
 	if r1 != 0 {
-		log.Printf("NtQueryInformationProcess failed: unexpected return value: %v", r1)
 		return err
 	}
 	return nil
@@ -41,7 +39,6 @@ func NtQueryProc(handle syscall.Handle, class uint32, info *ProcessInfo, length 
 func QueryImageName(handle syscall.Handle, flags uint32, nameBuffer []uint16, size *uint32) error {
 	err := windows.QueryFullProcessImageName(windows.Handle(handle), flags, &nameBuffer[0], size)
 	if err != nil {
-		log.Printf("QueryFullProcessImageName failed: %v", err)
 		return err
 	}
 	return nil
@@ -51,7 +48,6 @@ func QueryImageName(handle syscall.Handle, flags uint32, nameBuffer []uint16, si
 func CurrentProcName() (string, error) {
 	exePath, err := os.Executable()
 	if err != nil {
-		log.Printf("os.Executable failed: %v", err)
 		return "", err
 	}
 	return filepath.Base(exePath), nil
@@ -62,7 +58,6 @@ func ParentAntiDebug() bool {
 	const ProcInfo = 0
 	var p ProcessInfo
 	if err := NtQueryProc(syscall.Handle(windows.CurrentProcess()), ProcInfo, &p, uint32(unsafe.Sizeof(p))); err != nil {
-		log.Printf("Error querying process information: %v", err)
 		return false
 	}
 	par := int32(p.InheritedFromPID)
@@ -71,7 +66,6 @@ func ParentAntiDebug() bool {
 	}
 	handle, err := syscall.OpenProcess(syscall.PROCESS_QUERY_INFORMATION, false, uint32(par))
 	if err != nil {
-		log.Printf("Error opening process handle: %v", err)
 		return false
 	}
 	defer syscall.CloseHandle(handle)
@@ -79,7 +73,6 @@ func ParentAntiDebug() bool {
 	buff13 := make([]uint16, windows.MAX_PATH)
 	size := uint32(len(buff13))
 	if err := QueryImageName(handle, 0, buff13, &size); err != nil {
-		log.Printf("Error querying image name: %v", err)
 		return false
 	}
 	parname := filepath.Base(syscall.UTF16ToString(buff13[:size]))

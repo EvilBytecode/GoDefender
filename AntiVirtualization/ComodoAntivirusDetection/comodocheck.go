@@ -1,12 +1,9 @@
 package ComodoAntivirusDetection
 
 import (
-    "fmt"
     "os"
     "golang.org/x/sys/windows/registry"
-    "syscall"
-    "os/exec"
-    "strings"
+    "golang.org/x/sys/windows/svc/mgr"
 )
 
 // DetectComodoAntivirus checks if Comodo Antivirus is installed or present.
@@ -34,7 +31,7 @@ func DetectComodoAntivirus() bool {
         return true
     }
 
-    // Check for Comodo Antivirus service via WMIC
+    // Check for Comodo Antivirus service using Windows service manager.
     if checkComodoService() {
         return true
     }
@@ -54,21 +51,26 @@ func checkComodoRegistry() bool {
     return registryKeyExists(registry.LOCAL_MACHINE, comodoKey)
 }
 
-// checkComodoService checks for the Comodo Antivirus service via WMIC.
+// checkComodoService checks for the Comodo Antivirus service using Windows service manager.
 func checkComodoService() bool {
     serviceName := "cmdagent"
     return serviceExists(serviceName)
 }
 
-// serviceExists checks if a service exists using WMIC.
+// serviceExists checks if a service exists using Windows service manager.
 func serviceExists(serviceName string) bool {
-    cmd := exec.Command("wmic", "service", "where", fmt.Sprintf("Name='%s'", serviceName), "get", "Name")
+    m, err := mgr.Connect()
+    if err != nil {
+        return false
+    }
+    defer m.Disconnect()
 
-    // Hide the console window
-    cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
-
-    output, err := cmd.Output()
-    return err == nil && strings.TrimSpace(string(output)) != ""
+    s, err := m.OpenService(serviceName)
+    if err != nil {
+        return false
+    }
+    s.Close()
+    return true
 }
 
 // registryKeyExists checks if a registry key exists.
