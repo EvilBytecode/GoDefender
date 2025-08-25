@@ -1,119 +1,128 @@
-package AntiDebugVMAnalysis
+package main
 
 import (
-	"log"
-	"os"
-	// AntiDebug
-	"github.com/EvilBytecode/GoDefender/AntiDebug/CheckBlacklistedWindowsNames"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/InternetCheck"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/IsDebuggerPresent"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/ParentAntiDebug"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/RemoteDebugger"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/RunningProcesses"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/UserAntiAntiDebug"
-	"github.com/EvilBytecode/GoDefender/AntiDebug/pcuptime"
-	// AntiVirtualization
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/KVMCheck"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/MonitorMetrics"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/TriageDetection"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/USBCheck"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/UsernameCheck"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMWareDetection"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VirtualboxDetection"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/VMArtifacts"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/RepetitiveProcess"
-	"github.com/EvilBytecode/GoDefender/AntiVirtualization/ParallelsCheck"
+	"GoDefender/internal/antivm"
+	"GoDefender/internal/antidebug"
+	"GoDefender/internal/antidll"
+	"GoDefender/internal/hooks"
+	"GoDefender/internal/utils"
+	"fmt"
 )
 
-func ThunderKitty() {
+func main() {
+	utils.Print("Starting GoDefender checks...")
 
-	// lets just catch bunch of vms at beginning lol
-	if usbPluggedIn, err := USBCheck.PluggedIn(); err != nil {
-		os.Exit(-1)
-	} else if usbPluggedIn {
-		log.Println("[DEBUG] USB devices have been plugged in, check passed.")
+	vmDetector := antivm.New()
+	debugger := antidebug.New()
+	dllProtector := antidll.New()
+	hookDetector := hooks.New()
+
+	if lowRefresh, err := vmDetector.CheckDisplayRefreshRate(); err == nil && lowRefresh {
+		utils.Print("Suspicious display refresh rate detected (< 29Hz)")
+	}
+
+	if err := dllProtector.PreventDLLInjection(); err != nil {
+		utils.Print("Failed to set DLL injection protection")
+	}
+
+	if hookDetector.AntiAntiDebug() {
+		utils.Print("API hooks detected")
+	}
+	
+	if debugger.PatchAntiDebug() {
+		utils.Print("Anti-debug patches applied")
+	}
+	
+	if debugger.SetDebugFilterState() {
+		utils.Print("Debug filter state protected")
+	}
+
+	usbPluggedIn, err := vmDetector.CheckUSBDevices()
+	if err != nil || !usbPluggedIn {
+		utils.Print("USB check failed")
+	}
+
+	if vmDetector.CheckBlacklistedUsernames() {
+		utils.Print("Blacklisted username detected")
+	}
+
+	if !debugger.CheckParentProcess() {
+		utils.Print("Suspicious parent process detected")
+	}
+
+	if vmware, _ := vmDetector.CheckVMware(); vmware {
+		utils.Print("VMWare detected")
+	}
+
+	if vbox, _ := vmDetector.CheckVirtualBox(); vbox {
+		utils.Print("VirtualBox detected")
+	}
+
+	if kvm, _ := vmDetector.CheckKVM(); kvm {
+		utils.Print("KVM detected")
+	}
+
+	if parallels, _ := vmDetector.CheckParallels(); parallels {
+		utils.Print("Parallels detected")
+	}
+
+	if qemu, _ := vmDetector.CheckQEMU(); qemu {
+		utils.Print("QEMU detected")
+	}
+
+	if vmDetector.CheckVMFiles() {
+		utils.Print("VM files detected")
+	}
+
+	if vmDetector.CheckAnyRun() {
+		utils.Print("Any.Run detected")
+	}
+
+	if portCheck, _ := vmDetector.CheckPortConnectors(); portCheck {
+		utils.Print("Suspicious port configuration")
+	}
+
+	if screenSmall, _ := vmDetector.CheckScreenSize(); screenSmall {
+		utils.Print("Suspicious screen metrics")
+	}
+
+	if vmDetector.CheckNamedPipes() {
+		utils.Print("Suspicious named pipes detected")
+	}
+
+
+	if remoteDbg, _ := debugger.CheckRemoteDebugger(); remoteDbg {
+		utils.Print("Remote debugger detected")
+	}
+
+	if debugger.CheckBlacklistedWindows() {
+		utils.Print("Analysis tool window detected")
+	}
+
+	if badProc, _ := debugger.CheckBlacklistedProcesses(); badProc {
+		utils.Print("Malicious process detected")
+	}
+
+	if repProc, _ := debugger.CheckRepetitiveProcesses(60); repProc {
+		utils.Print("Suspicious process pattern")
+	}
+
+	if connected, _ := debugger.CheckInternetConnection(); !connected {
+		utils.Print("No internet connection")
+	}
+
+	procCount, _ := debugger.GetRunningProcessCount()
+	if procCount < 50 {
+		utils.Print("Abnormal process count")
+	}
+
+	utils.Print("✅ All security checks passed!")
+
+	if err := dllProtector.PatchAllLoadLibrary(); err != nil {
+		utils.Print("Failed to patch LoadLibrary functions")
 	} else {
-		os.Exit(-1)
-	}
-	if blacklistedUsernameDetected := UsernameCheck.CheckForBlacklistedNames(); blacklistedUsernameDetected {
-		log.Println("[DEBUG] Blacklisted username detected")
-		os.Exit(-1)
-	}
-	// lets make their job harder.
-	HooksDetection.AntiAntiDebug()
-
-	//
-	// AntiVirtualization checks
-	if vmwareDetected, _ := VMWareDetection.GraphicsCardCheck(); vmwareDetected {
-		log.Println("[DEBUG] VMWare detected")
-		os.Exit(-1)
+		utils.Print("All LoadLibrary functions patched successfully")
 	}
 
-	if virtualboxDetected, _ := VirtualboxDetection.GraphicsCardCheck(); virtualboxDetected {
-		log.Println("[DEBUG] Virtualbox detected")
-		os.Exit(-1)
-	}
-
-	if kvmDetected, _ := KVMCheck.CheckForKVM(); kvmDetected {
-		log.Println("[DEBUG] KVM detected")
-		os.Exit(-1)
-	}
-
-	if triageDetected, _ := TriageDetection.TriageCheck(); triageDetected {
-		log.Println("[DEBUG] Triage detected")
-		os.Exit(-1)
-	}
-
-	if isScreenSmall, _ := MonitorMetrics.IsScreenSmall(); isScreenSmall {
-		log.Println("[DEBUG] Screen size is small")
-		os.Exit(-1)
-	}
-	if VMArtifacts := VMArtifacts.VMArtifactsDetect(); VMArtifacts {
-		log.Println("[DEBUG] VMArtifacts components detected. Exiting.")
-		os.Exit(-1)
-	}
-
-	if repetitiveproc, _ := RepetitiveProcess.Check(); repetitiveproc {
-		log.Println("[DEBUG] RepetitiveProcess detected. Exiting")
-		os.Exit(-1)
-	}
-
-	if pararelcheck, _ := ParallelsCheck.CheckForParallels(); pararelcheck {
-		log.Println("[DEBUG] Parallels detected. Exiting")
-		os.Exit(-1)
-	}
-
-	CheckBlacklistedWindowsNames.CheckBlacklistedWindows()
-
-	// Other AntiDebug checks
-	if isDebuggerPresentResult := IsDebuggerPresent.IsDebuggerPresent1(); isDebuggerPresentResult {
-		log.Println("[DEBUG] Debugger presence detected")
-		os.Exit(-1)
-	}
-
-	if remoteDebuggerDetected, _ := RemoteDebugger.RemoteDebugger(); remoteDebuggerDetected {
-		log.Println("[DEBUG] Remote debugger detected")
-		os.Exit(-1)
-	}
-
-	if connected, _ := InternetCheck.CheckConnection(); !connected {
-		log.Println("[DEBUG] Internet connection check failed")
-		os.Exit(-1)
-	}
-
-	if parentAntiDebugResult := ParentAntiDebug.ParentAntiDebug(); parentAntiDebugResult {
-		log.Println("[DEBUG] ParentAntiDebug check failed")
-		os.Exit(-1)
-	}
-
-	if runningProcessesCountDetected, _ := RunningProcesses.CheckRunningProcessesCount(50); runningProcessesCountDetected {
-		log.Println("[DEBUG] Running processes count detected")
-		os.Exit(-1)
-	}
-
-	if pcUptimeDetected, _ := pcuptime.CheckUptime(1200); pcUptimeDetected {
-		log.Println("[DEBUG] PC uptime detected")
-		os.Exit(-1)
-	}
-
-}
+	fmt.Scanln()
+}	
