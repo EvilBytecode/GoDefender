@@ -174,7 +174,7 @@ func (d *Debugger) CheckBlacklistedWindows() bool {
 	user32 := windows.NewLazySystemDLL("user32.dll")
 	procGetWindowText := user32.NewProc("GetWindowTextW")
 	procEnumWindows := user32.NewProc("EnumWindows")
-
+    found = false
 	var enumWindowsProc = func(hwnd windows.HWND, lparam uintptr) uintptr {
 		var title [256]uint16
 		procGetWindowText.Call(
@@ -186,6 +186,7 @@ func (d *Debugger) CheckBlacklistedWindows() bool {
 		
 		for _, blacklisted := range d.blacklistedWindows {
 			if strings.Contains(strings.ToLower(windowTitle), strings.ToLower(blacklisted)) {
+				found = true
 				return 0
 			}
 		}
@@ -196,5 +197,5 @@ func (d *Debugger) CheckBlacklistedWindows() bool {
 		windows.NewCallback(enumWindowsProc),
 		0,
 	)
-	return false
+	return found
 }
