@@ -221,7 +221,7 @@ func (v *VMDetector) CheckUSBDevices() (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	return len(subKeys) > 0, nil
+	return len(subKeys) == 0, nil
 }
 
 // im not fan of this one, but its a good way to check if the user is a sandboxed user. 
